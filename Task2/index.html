@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="graph.js"></script>
+    </head>
+    <body>
+<script>
+    function findNearestVertex(distances, visited) {
+  let minDistance = Infinity;
+  let nearestVertex = null;
+
+  Object.keys(distances).forEach(vertex => {
+    if (!visited[vertex] && distances[vertex] < minDistance) {
+      minDistance = distances[vertex];
+      nearestVertex = vertex;
+    }
+  });
+
+  return nearestVertex;
+}
+function dijkstra(graph, startVertex) {
+  let visited = {};
+  let distances = {}; // shortest ways from the starting vertex
+  let previous = {}; // previous vertex
+    
+  let vertices = Object.keys(graph); // graph vertex list
+  
+  
+  vertices.forEach(vertex => {
+    distances[vertex] = Infinity;
+    previous[vertex] = null;
+  });
+
+  
+  distances[startVertex] = 0;
+
+  function handleVertex(vertex) {
+    
+    let activeVertexDistance = distances[vertex]; 
+    
+   
+    let neighbours = graph[activeVertex];
+    
+   
+    Object.keys(neighbours).forEach(neighbourVertex => {
+      // currently known distance
+      let currentNeighbourDistance = distances[neighbourVertex];
+      // calculated distance
+      let newNeighbourDistance = activeVertexDistance + neighbours[neighbourVertex];
+      
+      if (newNeighbourDistance < currentNeighbourDistance) {
+        distances[neighbourVertex] = newNeighbourDistance;
+        previous[neighbourVertex] = vertex;
+      }
+    });
+    
+    
+    visited[vertex] = 1;
+  }
+  
+ 
+  let activeVertex = findNearestVertex(distances, visited);
+
+ 
+  while(activeVertex) {
+    handleVertex(activeVertex);
+    activeVertex = findNearestVertex(distances, visited);
+  }
+  
+  return { distances, previous };
+}
+
+let city=prompt('введите город, откуда едете',)
+let end=prompt('введите город ,куда едете',)
+
+ 
+alert(JSON.stringify(dijkstra(graph, city).distances[end]))
+
+</script>
+    </body>
+</html>
